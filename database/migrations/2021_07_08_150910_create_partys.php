@@ -14,9 +14,10 @@ class CreatePartys extends Migration
     public function up()
     {
         Schema::create('partys', function (Blueprint $table) {
-            $table->id()->onDelete('cascade');
+            $table->id();
             $table->string('partyName');
-            $table->foreignId('game_id')->references('id')->on('games');
+            $table->foreignId('game_id')->references('id')->on('games')->onDelete('cascade');
+            $table->foreignId('owner_id')->references('id')->on('users')->onDelete('cascade');
             $table->timestamps();
         });
     }

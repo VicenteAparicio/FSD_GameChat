@@ -11,16 +11,17 @@ class User extends Authenticatable
 {
     use HasFactory, Notifiable;
 
-    // RELATIONS
-
-    // 
+    // USER HAS MANY USERPARTY
     public function userparty(){
         return $this->hasMany(UserParty::class);
     }
     public function message(){
         return $this->hasMany(Message::class);
     }
-
+    public function party(){
+        return $this->hasMany(Party::class);
+    }
+    
     /**
      * The attributes that are mass assignable.
      *

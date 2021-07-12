@@ -7,6 +7,13 @@ use Illuminate\Database\Eloquent\Model;
 
 class Party extends Model
 {
+    use HasFactory;
+
+    protected $fillable = [
+        'partyName', 'description'
+    ];
+
+
     public function game(){
         return $this->belongsTo(Game::class);
     }

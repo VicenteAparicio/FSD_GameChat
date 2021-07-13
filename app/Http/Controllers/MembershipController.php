@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\UserParty;
+use App\Models\Membership;
 use Illuminate\Http\Request;
 
-class UserPartyController extends Controller
+class MembershipController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -31,10 +31,10 @@ class UserPartyController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\UserParty  $userParty
+     * @param  \App\Models\Membership  $membership
      * @return \Illuminate\Http\Response
      */
-    public function show(UserParty $userParty)
+    public function show(Membership $membership)
     {
         //
     }
@@ -43,10 +43,10 @@ class UserPartyController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\UserParty  $userParty
+     * @param  \App\Models\Membership  $membership
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, UserParty $userParty)
+    public function update(Request $request, Membership $membership)
     {
         //
     }
@@ -54,10 +54,10 @@ class UserPartyController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\UserParty  $userParty
+     * @param  \App\Models\Membership  $membership
      * @return \Illuminate\Http\Response
      */
-    public function destroy(UserParty $userParty)
+    public function destroy(Membership $membership)
     {
         //
     }

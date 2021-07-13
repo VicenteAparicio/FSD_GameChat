@@ -11,6 +11,12 @@ class Game extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'title',
+        'thumbnail_url',
+        'url',
+    ];
+
     // GAME has many Party relations
     public function party(){
         return $this->hasMany(Party::class);

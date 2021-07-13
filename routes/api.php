@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\PartyController;
+use App\Http\Controllers\GameController;
 use App\Http\Controllers\PassportAuthController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -18,6 +19,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::post('register', [PassportAuthController::class, 'register']);
 Route::post('login', [PassportAuthController::class, 'login']);
+Route::post('game', [GameController::class, 'store']);
 
 Route::middleware('auth:api')->group(function() {
     Route::resource('parties', PartyController::class);

@@ -14,7 +14,12 @@ class GameController extends Controller
      */
     public function index()
     {
-        //
+        $games = auth()->user()->games;
+
+        return response()->json([
+            'success'=>true,
+            'data'=>$games
+        ]);
     }
 
     /**
@@ -25,7 +30,31 @@ class GameController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $this->validate($request, [
+            'title'=>'required',
+            'thumbnail_url'=>'required',
+            'url'=>'required',
+        ]);
+
+        $game = Game::create([
+            'title'=>$request->title,
+            'thumbnail_url'=>$request->thumbnail_url,
+            'url'=>$request->url
+        ]);
+        
+
+        if ($game){
+            return response()->json([
+                'success'=>true,
+                'data'=>$game->toArray()
+            ]);
+
+        } else {
+            return response()->json([
+                'success'=>false,
+                'message'=>'Game not added'
+            ], 500);
+        }
     }
 
     /**

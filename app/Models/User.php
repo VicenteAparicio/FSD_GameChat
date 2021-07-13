@@ -13,15 +13,15 @@ class User extends Authenticatable
     use HasFactory, Notifiable, HasApiTokens;
 
     // USER HAS MANY USERPARTY
-    public function userparty(){
-        return $this->hasMany(UserParty::class);
+    public function membership(){
+        return $this->hasMany(Membership::class);
     }
     public function message(){
         return $this->hasMany(Message::class);
     }
-    public function parties(){
-        return $this->hasMany(Party::class);
-    }
+    // public function parties(){
+    //     return $this->hasMany(Party::class);
+    // }
     
     /**
      * The attributes that are mass assignable.

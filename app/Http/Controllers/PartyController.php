@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Party;
 use Illuminate\Http\Request;
 
+
 class PartyController extends Controller
 {
     /**
@@ -14,7 +15,12 @@ class PartyController extends Controller
      */
     public function index()
     {
-        //
+        $parties = auth()->user()->parties;
+
+        return response()->json([
+            'success'=>true,
+            'data'=>$parties
+        ]);
     }
 
     /**
@@ -25,7 +31,26 @@ class PartyController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $this->validate($request, [
+            'title'=>'required',
+            'description'=>'required'
+        ]);
+
+        $party = new Party();
+        $party->partyName = $request->partyName;
+        $party->description = $request->description;
+
+        if (auth()->user()->parties()->save($party)) {
+            return response()->json([
+                'success'=>true,
+                'data'=>$party->toArray()
+            ]);
+        } else {
+            return response()->json([
+                'success'=>false,
+                'message'=>'Party not added'
+            ], 500);
+        }
     }
 
     /**
@@ -34,9 +59,21 @@ class PartyController extends Controller
      * @param  \App\Models\Party  $party
      * @return \Illuminate\Http\Response
      */
-    public function show(Party $party)
+    public function show($id)
     {
-        //
+        $party = auth()->user()->parties()->find($id);
+
+        if(!$party) {
+            return response()->json([
+                'success'=>false,
+                'message'=>'Party not found'
+            ], 400);
+        }
+
+        return response()->json([
+            'success'=>true,
+            'data'=>$party->toArray()
+        ], 400);
     }
 
     /**
@@ -46,9 +83,29 @@ class PartyController extends Controller
      * @param  \App\Models\Party  $party
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Party $party)
+    public function update(Request $request, $id)
     {
-        //
+        $party = auth()->user()->parties()->find($id);
+
+        if (!$party) {
+            return response()->json([
+                'success'=>false,
+                'message'=> 'Party not found'
+            ], 400);
+        }
+
+        $updated = $party->fill($request->all())->save();
+
+        if ($updated) {
+            return response()->json([
+                'success'=>true
+            ]);
+        } else {
+            return response()->json([
+                'success'=>false,
+                'message'=>'Party can not be updated'
+            ], 500);
+        }
     }
 
     /**
@@ -57,8 +114,28 @@ class PartyController extends Controller
      * @param  \App\Models\Party  $party
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Party $party)
+    public function destroy($id)
     {
-        //
+        $party = auth()->user()->parties()->find($id);
+
+        if (!$party) {
+            return response()->json([
+
+                'success' => false,
+                'message' => 'Party not found'
+
+            ], 400);
+        }
+
+        if ($party->delte()) {
+            return response()->json([
+                'success' => true
+            ]);
+        } else {
+            return response()->json([
+                'suceess'=>false,
+                'message'=>'Party can not be deleted'
+            ], 500);
+        }
     }
 }

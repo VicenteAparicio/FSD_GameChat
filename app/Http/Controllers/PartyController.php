@@ -55,7 +55,7 @@ class PartyController extends Controller
         } else {
             return response()->json([
                 'success'=>false,
-                'message'=>'Party not added'
+                'message'=>'Party not created'
             ], 500);
         }
     }
@@ -66,10 +66,11 @@ class PartyController extends Controller
      * @param  \App\Models\Party  $party
      * @return \Illuminate\Http\Response
      */
-    public function show(Request $request)
+    public function partyid(Request $request)
     {
         
-        $party = auth()->user()->parties()->find($request->$id);
+        $id = $request->id;
+        $party = Party::find($id);
 
         if(!$party) {
             return response()->json([
@@ -84,18 +85,38 @@ class PartyController extends Controller
         ], 400);
     }
 
-    public function gameparties(Request $request)
+    public function partyowner(Request $request)
     {
 
-        $game_id = $request->game_id;
-        
-        $party = Party::where('game_id', $game_id)
-        ->get();
+        $owner_id = $request->owner_id;
+        $party = Party::where('owner_id', $owner_id)->get();
 
         if(!$party) {
             return response()->json([
                 'success'=>false,
                 'message'=>'Party not found'
+            ], 400);
+        }
+
+        return response()->json([
+            'success'=>true,
+            'data'=>$party->toArray()
+        ], 400);
+    }
+
+    public function gameparty(Request $request)
+    {
+
+        // $id = $request->game_id;
+        // $party = Party::find($id);
+
+        $game_id = $request->game_id;
+        $party = Party::where('game_id', $game_id)->get();
+
+        if(!$party) {
+            return response()->json([
+                'success'=>false,
+                'message'=>'Party not found '.$id,
             ], 400);
         }
 
@@ -115,7 +136,8 @@ class PartyController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $party = auth()->user()->parties()->find($id);
+        $id = $request->game_id;
+        $party = Party::find($id);
 
         if (!$party) {
             return response()->json([

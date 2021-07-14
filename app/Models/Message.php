@@ -14,4 +14,12 @@ class Message extends Model
     public function party(){
         return $this->belongsTo(Party::class);
     }
+
+
+    protected $fillable = [
+        'message',
+        'date',
+        'party_id',
+        'user_id'
+    ];
 }

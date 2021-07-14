@@ -25,7 +25,30 @@ class MessageController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $this->validate($request, [
+            'message'=>'required|min:4'
+        ]);
+
+
+        $message = Message::create([
+            'message'=>$request->message,
+            'party_id'=>$request->party_id,
+            'user_id'=>$request->user_id,
+            'date'=>$request->date
+        ]);
+
+        if (!$message) {
+            return response()->json([
+                'success'=>false,
+                'message'=>'Message not created'
+            ], 500);
+        }
+
+        return response()->json([
+            'success'=>true,
+            'data'=>$message->toArray()
+        ], 400);
+
     }
 
     /**

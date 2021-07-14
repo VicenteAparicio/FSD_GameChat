@@ -35,22 +35,15 @@ class PartyController extends Controller
             'partyName'=>'required',
             'description'=>'required',
             'game_id'=>'required',
-            // 'owner_id'=>'required',
-            // 'user_id'=>'nullable'
+            'owner_id'=>'required',
         ]);
 
-        // $party = new Party();
-        // $party->partyName = $request->partyName;
-        // $party->description = $request->description;
-        // $party->game_id = $request->game_id;
-        // $party->owner_id = $request->owner_id;
-        // $party->user_id = $request->user_id;
 
         $party = Party::create([
             'partyName'=>$request->partyName,
             'description'=>$request->description,
             'game_id'=>$request->game_id,
-            // 'owner_id'=>$request->owner_id
+            'owner_id'=>$request->owner_id
         ]);
         
 
@@ -73,9 +66,10 @@ class PartyController extends Controller
      * @param  \App\Models\Party  $party
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Request $request)
     {
-        $party = auth()->user()->parties()->find($id);
+        
+        $party = auth()->user()->parties()->find($request->$id);
 
         if(!$party) {
             return response()->json([
@@ -89,6 +83,28 @@ class PartyController extends Controller
             'data'=>$party->toArray()
         ], 400);
     }
+
+    public function gameparties(Request $request)
+    {
+
+        $game_id = $request->game_id;
+        
+        $party = Party::where('game_id', $game_id)
+        ->get();
+
+        if(!$party) {
+            return response()->json([
+                'success'=>false,
+                'message'=>'Party not found'
+            ], 400);
+        }
+
+        return response()->json([
+            'success'=>true,
+            'data'=>$party->toArray()
+        ], 400);
+    }
+    
 
     /**
      * Update the specified resource in storage.
@@ -141,7 +157,7 @@ class PartyController extends Controller
             ], 400);
         }
 
-        if ($party->delte()) {
+        if ($party->delete()) {
             return response()->json([
                 'success' => true
             ]);

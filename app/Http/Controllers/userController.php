@@ -34,9 +34,21 @@ class UserController extends Controller
      * @param  \App\Models\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function show(User $user)
+    public function show(Request $request)
     {
-        //
+        $user = auth()->user()->find($request->$id);
+
+        if ($user) {
+            return response()->json([
+                'success' => false,
+                'message' => 'User not found'
+            ], 400);
+        } 
+
+        return response()->json([
+            'success'=>false,
+            'message'=>'User can not be found'
+        ], 500);
     }
 
     /**
@@ -48,7 +60,27 @@ class UserController extends Controller
      */
     public function update(Request $request, User $user)
     {
-        //
+        $user = auth()->user()->find($request->id);
+
+        if ($user) {
+            return response()->json([
+                'success' => false,
+                'message' => 'User not found'
+            ], 400);
+        } 
+
+        $updated = $user->fill($request->all())->save();
+
+        if ($updated) {
+            return response()->json([
+                'success'=>true
+            ]);
+        } else {
+            return response()->json([
+                'success'=>false,
+                'message'=>'User can not be updated'
+            ], 500);
+        }
     }
 
     /**

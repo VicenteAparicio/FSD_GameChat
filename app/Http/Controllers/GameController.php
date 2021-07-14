@@ -86,8 +86,9 @@ class GameController extends Controller
      * @param  \App\Models\Game  $game
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Game $game)
+    public function destroy(Request $request)
     {
-        //
+        $game_id = $request->game_id;
+        return Game::where('id', $game_id)->delete();
     }
 }

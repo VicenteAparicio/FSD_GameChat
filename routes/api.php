@@ -22,6 +22,8 @@ Route::post('login', [PassportAuthController::class, 'login']);
 Route::post('game', [GameController::class, 'store']);
 
 Route::middleware('auth:api')->group(function() {
-    Route::resource('parties', PartyController::class);
+    // Route::resource('parties', PartyController::class);
+    Route::post('createparty', [PartyController::class, 'store']);
+    Route::post('gameparties', [PartyController::class, 'gameparties']);
     // return $request->user();
 });

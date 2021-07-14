@@ -13,7 +13,7 @@ class Party extends Model
         'partyName',
         'description',
         'game_id',
-        // 'owner_id' =>'102',
+        'owner_id',
         // 'user_id'=>'103',
     ];
 
@@ -21,9 +21,9 @@ class Party extends Model
     public function game(){
         return $this->belongsTo(Game::class);
     }
-    // public function user(){
-    //     return $this->belongsTo(User::class);
-    // }
+    public function user(){
+        return $this->belongsTo(User::class);
+    }
     public function membership(){
         return $this->hasMany(Membership::class);
     }

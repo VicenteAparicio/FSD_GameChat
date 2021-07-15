@@ -68,9 +68,7 @@ class PartyController extends Controller
      */
     public function partyid(Request $request)
     {
-        
-        $id = $request->id;
-        $party = Party::find($id);
+        $party = Party::find($request->id);
 
         if(!$party) {
             return response()->json([
@@ -81,7 +79,7 @@ class PartyController extends Controller
 
         return response()->json([
             'success'=>true,
-            'data'=>$party->toArray()
+            'data'=>$party
         ], 400);
     }
 
@@ -110,8 +108,8 @@ class PartyController extends Controller
         // $id = $request->game_id;
         // $party = Party::find($id);
 
-        $game_id = $request->game_id;
-        $party = Party::where('game_id', $game_id)->get();
+        // $game_id = $request->game_id;
+        $party = Party::where('game_id', $request->game_id)->get();
 
         if(!$party) {
             return response()->json([

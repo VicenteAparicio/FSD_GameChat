@@ -30,31 +30,45 @@ class GameController extends Controller
      */
     public function store(Request $request)
     {
-        $this->validate($request, [
-            'title'=>'required',
-            'thumbnail_url'=>'required',
-            'url'=>'required',
-        ]);
+        $user = auth()->user();
 
-        $game = Game::create([
-            'title'=>$request->title,
-            'thumbnail_url'=>$request->thumbnail_url,
-            'url'=>$request->url
-        ]);
-        
+        if ($user->isAdmin) {
 
-        if ($game){
-            return response()->json([
-                'success'=>true,
-                'data'=>$game->toArray()
+            $this->validate($request, [
+                'title'=>'required',
+                'thumbnail_url'=>'required',
+                'url'=>'required',
             ]);
-
+    
+            $game = Game::create([
+                'title'=>$request->title,
+                'thumbnail_url'=>$request->thumbnail_url,
+                'url'=>$request->url
+            ]);
+            
+            if ($game){
+                return response()->json([
+                    'success'=>true,
+                    'data'=>$game
+                ]);
+    
+            } else {
+                return response()->json([
+                    'success'=>false,
+                    'message'=>'Game not added'
+                ], 500);
+            }
         } else {
             return response()->json([
                 'success'=>false,
-                'message'=>'Game not added'
-            ], 500);
+                'message'=>'You need admin authorization'
+            ], 400);
         }
+
+        
+        
+
+
     }
 
     /**

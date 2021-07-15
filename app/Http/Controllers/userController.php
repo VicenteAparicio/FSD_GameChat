@@ -36,19 +36,36 @@ class UserController extends Controller
      */
     public function show(Request $request)
     {
-        $user = auth()->user()->find($request->$id);
+        // $user = auth()->user()->find($request->$id);
 
-        if ($user) {
+        // if ($user) {
+        //     return response()->json([
+        //         'success' => false,
+        //         'message' => 'User not found'
+        //     ], 400);
+        // } 
+
+        // return response()->json([
+        //     'success'=>false,
+        //     'message'=>'User can not be found'
+        // ], 500);
+    }
+
+    public function all()
+    {
+        $user = auth()->user();
+        if ($user->isAdmin) {
+            $allUsers = User::all();
+            return response()->json([
+                'success' => true,
+                'data' => $allUsers
+            ], 200);
+        }else{      
             return response()->json([
                 'success' => false,
-                'message' => 'User not found'
+                'messate' => 'You need admin authorization'
             ], 400);
-        } 
-
-        return response()->json([
-            'success'=>false,
-            'message'=>'User can not be found'
-        ], 500);
+        }
     }
 
     /**

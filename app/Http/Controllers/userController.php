@@ -51,7 +51,7 @@ class UserController extends Controller
         // ], 500);
     }
 
-    public function all()
+    public function allusers()
     {
         $user = auth()->user();
         if ($user->isAdmin) {

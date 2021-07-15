@@ -25,6 +25,8 @@ class MessageController extends Controller
      */
     public function store(Request $request)
     {
+        $user = auth()->user();
+
         $this->validate($request, [
             'message'=>'required|min:4'
         ]);
@@ -33,7 +35,7 @@ class MessageController extends Controller
         $message = Message::create([
             'message'=>$request->message,
             'party_id'=>$request->party_id,
-            'user_id'=>$request->user_id,
+            'user_id'=>$user->id,
             'date'=>$request->date
         ]);
 

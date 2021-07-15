@@ -20,6 +20,5 @@ class Message extends Model
         'message',
         'date',
         'party_id',
-        'user_id'
     ];
 }

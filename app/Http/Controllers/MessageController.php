@@ -25,7 +25,14 @@ class MessageController extends Controller
      */
     public function store(Request $request)
     {
-        $user = auth()->user();
+        $user= auth()->user();
+
+        // if ($user){
+        //     return response()->json([
+        //         'success'=>true,
+        //         'message'=>'Id is ' . $user
+        //     ]);
+        // }
 
         $this->validate($request, [
             'message'=>'required|min:4'
@@ -42,7 +49,7 @@ class MessageController extends Controller
         if (!$message) {
             return response()->json([
                 'success'=>false,
-                'message'=>'Message not created'
+                'message'=>'Message not created ' . $user->id
             ], 500);
         }
 

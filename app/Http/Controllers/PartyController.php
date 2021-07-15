@@ -31,11 +31,12 @@ class PartyController extends Controller
      */
     public function store(Request $request)
     {
+        $user= auth()->user();
+
         $this->validate($request, [
             'partyName'=>'required',
             'description'=>'required',
             'game_id'=>'required',
-            'owner_id'=>'required',
         ]);
 
 
@@ -43,7 +44,7 @@ class PartyController extends Controller
             'partyName'=>$request->partyName,
             'description'=>$request->description,
             'game_id'=>$request->game_id,
-            'owner_id'=>$request->owner_id
+            'owner_id'=>$user->id
         ]);
         
 

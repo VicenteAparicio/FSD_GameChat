@@ -25,14 +25,8 @@ class MessageController extends Controller
      */
     public function store(Request $request)
     {
-        $user= auth()->user();
 
-        // if ($user){
-        //     return response()->json([
-        //         'success'=>true,
-        //         'message'=>'Id is ' . $user
-        //     ]);
-        // }
+        $user = auth()->user();
 
         $this->validate($request, [
             'message'=>'required|min:4'

@@ -30,6 +30,7 @@ Route::middleware('auth:api')->group(function() {
     Route::post('partyowner', [PartyController::class, 'partyowner']);
     Route::post('gameparty', [PartyController::class, 'gameparty']);
     Route::post('partyid', [PartyController::class, 'partyid']);
+    Route::get('allparties', [PartyController::class, 'index']);
     // MESSAGE ROUTES
     Route::post('newmessage', [MessageController::class, 'store']);
     // USER ROUTES

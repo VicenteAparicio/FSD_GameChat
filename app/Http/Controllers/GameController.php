@@ -47,44 +47,31 @@ class GameController extends Controller
 
         if ($user->isAdmin) {
 
-            $exist = Game::where('title', $request->title)->get();
 
-            if (!$exist) {
-
-                $this->validate($request, [
-                    'title'=>'required',
-                    'thumbnail_url'=>'required',
-                    'url'=>'required',
-                ]);
-        
-                $game = Game::create([
-                    'title'=>$request->title,
-                    'thumbnail_url'=>$request->thumbnail_url,
-                    'url'=>$request->url
-                ]);
-                
-                if ($game){
-                    return response()->json([
-                        'success'=>true,
-                        'data'=>$game
-                    ], 200);
-        
-                } else {
-
-                    return response()->json([
-                        'success'=>false,
-                        'message'=>'Game not added'
-                    ], 500);
-                    
-                }
-
+            $this->validate($request, [
+                'title'=>'required',
+                'thumbnail_url'=>'required',
+                'url'=>'required',
+            ]);
+    
+            $game = Game::create([
+                'title'=>$request->title,
+                'thumbnail_url'=>$request->thumbnail_url,
+                'url'=>$request->url
+            ]);
+            
+            if ($game){
+                return response()->json([
+                    'success'=>true,
+                    'data'=>$game
+                ], 200);
+    
             } else {
-
                 return response()->json([
                     'success'=>false,
-                    'message'=>'Game already on database'
+                    'message'=>'Game not added'
                 ], 500);
-
+                
             }
 
         } else {

@@ -47,9 +47,9 @@ class GameController extends Controller
 
         if ($user->isAdmin) {
 
-            $exist = Game::where('title', $request->title);
+            $exist = Game::where('title', $request->title)->get();
 
-            if ($exist->title == null) {
+            if (!$exist) {
 
                 $this->validate($request, [
                     'title'=>'required',

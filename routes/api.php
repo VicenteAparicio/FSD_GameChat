@@ -5,6 +5,7 @@ use App\Http\Controllers\GameController;
 use App\Http\Controllers\MessageController;
 use App\Http\Controllers\userController;
 use App\Http\Controllers\PassportAuthController;
+use App\Http\Controllers\MembershipController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -32,7 +33,7 @@ Route::middleware('auth:api')->group(function() {
     Route::post('gameparty', [PartyController::class, 'gameparty']);
     Route::post('partyid', [PartyController::class, 'partyid']);
     // MEMBERSHIP ROUTES
-    Route::post('addmember', [PartyController::class, 'store']);
+    Route::post('addmember', [MembershipController::class, 'store']);
     // MESSAGE ROUTES
     Route::post('newmessage', [MessageController::class, 'store']);
     // USER ROUTES

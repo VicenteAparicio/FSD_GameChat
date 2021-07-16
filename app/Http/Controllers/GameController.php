@@ -49,7 +49,7 @@ class GameController extends Controller
 
             $game = Game::where('title', $request->title);
 
-            if ($game->title!=$request->title) {
+            if (!$game?->title) {
 
                 $this->validate($request, [
                     'title'=>'required',

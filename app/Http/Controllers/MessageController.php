@@ -26,44 +26,44 @@ class MessageController extends Controller
      */
     public function store(Request $request)
     {
-        $existeuserparty = Membership::where('party_id', $request->party_id AND 'user_id', $request->user_id);
-        
-        if ($existeuserparty->isEmpty()) {
-
-        
 
         $user = auth()->user();
 
-        $this->validate($request, [
-            'message'=>'required|min:4'
-        ]);
+        $existeuserparty = Membership::where('party_id', $request->party_id AND 'user_id', $user->id);
+        
+        if ($existeuserparty->isEmpty()) {
 
 
-        $message = Message::create([
-            'message'=>$request->message,
-            'party_id'=>$request->party_id,
-            'user_id'=>$user->id,
-            'date'=>$request->date
-        ]);
+            $this->validate($request, [
+                'message'=>'required|min:4'
+            ]);
 
-        if (!$message) {
+
+            $message = Message::create([
+                'message'=>$request->message,
+                'party_id'=>$request->party_id,
+                'user_id'=>$user->id,
+                'date'=>$request->date
+            ]);
+
+            if (!$message) {
+                return response()->json([
+                    'success'=>false,
+                    'message'=>'Message not created ' 
+                ], 500);
+            }
+
             return response()->json([
-                'success'=>false,
-                'message'=>'Message not created ' 
-            ], 500);
+                'success'=>true,
+                'data'=>$message->toArray()
+            ], 400);
+        } else {
+            return response()->json([
+                'success'=>true,
+                'message'=>'User is not in the party'
+            ], 400);
+
         }
-
-        return response()->json([
-            'success'=>true,
-            'data'=>$message->toArray()
-        ], 400);
-    } else {
-        return response()->json([
-            'success'=>true,
-            'message'=>'User is not in the party'
-        ], 400);
-
-    }
 
     }
 

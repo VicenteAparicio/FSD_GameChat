@@ -49,7 +49,7 @@ class GameController extends Controller
 
             $game = Game::where('title', $request->title);
 
-            if (!$game) {
+            if ($game->title!=$request->title) {
 
                 $this->validate($request, [
                     'title'=>'required',
@@ -177,7 +177,7 @@ class GameController extends Controller
 
                 return response()->json([
                     'success'=>false,
-                    'message'=>'Game not deleted'
+                    'message'=>'Game can not be deleted cause is being used'
                 ], 500);
 
             }

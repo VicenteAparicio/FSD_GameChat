@@ -33,7 +33,6 @@ class MessageController extends Controller
         
         if ($existeuserparty->isEmpty()) {
 
-
             $this->validate($request, [
                 'message'=>'required|min:4'
             ]);
@@ -57,7 +56,9 @@ class MessageController extends Controller
                 'success'=>true,
                 'data'=>$message->toArray()
             ], 400);
+
         } else {
+
             return response()->json([
                 'success'=>true,
                 'message'=>'User is not in the party'

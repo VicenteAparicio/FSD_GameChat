@@ -65,7 +65,7 @@ class PartyController extends Controller
             return response()->json([
                 'success'=>true,
                 'data'=>$party->toArray()
-            ]);
+            ], 200);
         } else {
             return response()->json([
                 'success'=>false,

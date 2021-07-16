@@ -47,9 +47,9 @@ class GameController extends Controller
 
         if ($user->isAdmin) {
 
-            $game = Game::where('title', $request->title);
+            $exist = Game::where('title', $request->title);
 
-            if (!$game?->title) {
+            if (!$exist) {
 
                 $this->validate($request, [
                     'title'=>'required',
@@ -88,10 +88,12 @@ class GameController extends Controller
             }
 
         } else {
+
             return response()->json([
                 'success'=>false,
                 'message'=>'You need admin authorization'
             ], 400);
+
         }
 
     }

@@ -19,7 +19,7 @@ class PartyController extends Controller
 
         if ($user) {
 
-            $allParties = Game::all();
+            $allParties = Party::all();
 
             return response()->json([
                 'success' => true,

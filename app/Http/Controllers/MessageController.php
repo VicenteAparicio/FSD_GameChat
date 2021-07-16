@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Message;
+use App\Models\Membership;
 use Illuminate\Http\Request;
 
 class MessageController extends Controller
@@ -25,6 +26,11 @@ class MessageController extends Controller
      */
     public function store(Request $request)
     {
+        $existeuserparty = Membership::where('party_id', $request->party_id AND 'user_id', $request->user_id);
+        
+        if ($existeuserparty->isEmpty()) {
+
+        
 
         $user = auth()->user();
 
@@ -43,7 +49,7 @@ class MessageController extends Controller
         if (!$message) {
             return response()->json([
                 'success'=>false,
-                'message'=>'Message not created ' . $user->id
+                'message'=>'Message not created ' 
             ], 500);
         }
 
@@ -51,6 +57,13 @@ class MessageController extends Controller
             'success'=>true,
             'data'=>$message->toArray()
         ], 400);
+    } else {
+        return response()->json([
+            'success'=>true,
+            'message'=>'User is not in the party'
+        ], 400);
+
+    }
 
     }
 

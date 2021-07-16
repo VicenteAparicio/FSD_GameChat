@@ -15,12 +15,25 @@ class PartyController extends Controller
      */
     public function index()
     {
-        $parties = auth()->user()->parties;
+        $user = auth()->user();
 
-        return response()->json([
-            'success'=>true,
-            'data'=>$parties
-        ]);
+        if ($user) {
+
+            $allParties = Game::all();
+
+            return response()->json([
+                'success' => true,
+                'data' => $allParties
+            ], 200);
+
+        } else {      
+
+            return response()->json([
+                'success' => false,
+                'messate' => 'You need need to loguin'
+            ], 400);
+
+        }
     }
 
     /**

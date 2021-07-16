@@ -33,8 +33,11 @@ Route::middleware('auth:api')->group(function() {
     // MESSAGE ROUTES
     Route::post('newmessage', [MessageController::class, 'store']);
     // USER ROUTES
-    Route::post('allusers', [userController::class, 'allusers']);
+    Route::get('allusers', [userController::class, 'allusers']);
     // GAME ROUTES
     Route::post('addgame', [GameController::class, 'store']);
+    Route::post('deletegame', [GameController::class, 'destroy']);
+    Route::get('updategame', [GameController::class, 'update']);
+    Route::post('showgames', [GameController::class, 'index']);
     // return $request->user();
 });

@@ -14,12 +14,25 @@ class GameController extends Controller
      */
     public function index()
     {
-        $games = auth()->user()->games;
+        $user = auth()->user();
 
-        return response()->json([
-            'success'=>true,
-            'data'=>$games
-        ]);
+        if ($user) {
+
+            $allGames = Game::all();
+
+            return response()->json([
+                'success' => true,
+                'data' => $allGames
+            ], 200);
+
+        } else {      
+
+            return response()->json([
+                'success' => false,
+                'messate' => 'You need need to loguin'
+            ], 400);
+
+        }
     }
 
     /**
@@ -34,40 +47,52 @@ class GameController extends Controller
 
         if ($user->isAdmin) {
 
-            $this->validate($request, [
-                'title'=>'required',
-                'thumbnail_url'=>'required',
-                'url'=>'required',
-            ]);
-    
-            $game = Game::create([
-                'title'=>$request->title,
-                'thumbnail_url'=>$request->thumbnail_url,
-                'url'=>$request->url
-            ]);
-            
-            if ($game){
-                return response()->json([
-                    'success'=>true,
-                    'data'=>$game
+            $game = Game::where('title', $request->title);
+
+            if (!$game) {
+
+                $this->validate($request, [
+                    'title'=>'required',
+                    'thumbnail_url'=>'required',
+                    'url'=>'required',
                 ]);
-    
+        
+                $game = Game::create([
+                    'title'=>$request->title,
+                    'thumbnail_url'=>$request->thumbnail_url,
+                    'url'=>$request->url
+                ]);
+                
+                if ($game){
+                    return response()->json([
+                        'success'=>true,
+                        'data'=>$game
+                    ], 200);
+        
+                } else {
+
+                    return response()->json([
+                        'success'=>false,
+                        'message'=>'Game not added'
+                    ], 500);
+                    
+                }
+
             } else {
+
                 return response()->json([
                     'success'=>false,
-                    'message'=>'Game not added'
+                    'message'=>'Game already on database'
                 ], 500);
+
             }
+
         } else {
             return response()->json([
                 'success'=>false,
                 'message'=>'You need admin authorization'
             ], 400);
         }
-
-        
-        
-
 
     }
 
@@ -79,7 +104,7 @@ class GameController extends Controller
      */
     public function show(Game $game)
     {
-        //
+
     }
 
     /**
@@ -89,9 +114,42 @@ class GameController extends Controller
      * @param  \App\Models\Game  $game
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Game $game)
+    public function update(Request $request)
     {
-        //
+        $user = auth()->user();
+
+        if ($user->isAdmin) {
+
+            $game = Game::find($request->id);
+
+            if ($game) {
+
+                $updated = $game->fill($request->all())->save();
+
+                if ($updated) {
+
+                    return response()->json([
+                        'success'=>true
+                    ], 200);
+
+                } else {
+
+                    return response()->json([
+                        'success'=>false,
+                        'message'=>'Game can not be updated'
+                    ], 500);
+
+                }
+
+            } else {
+
+                return response()->json([
+                    'success' => false,
+                    'message' => 'You need admin authorization'
+                ], 400);
+
+            }
+        } 
     }
 
     /**
@@ -102,7 +160,36 @@ class GameController extends Controller
      */
     public function destroy(Request $request)
     {
-        $game_id = $request->game_id;
-        return Game::where('id', $game_id)->delete();
+        $user = auth()->user();
+
+        if ($user->isAdmin) {
+
+            $game = Game::find($request->game_id)->delete();
+            
+            if ($game){
+
+                return response()->json([
+                    'success'=>true,
+                    'data'=>$game
+                ], 200);
+    
+            } else {
+
+                return response()->json([
+                    'success'=>false,
+                    'message'=>'Game not deleted'
+                ], 500);
+
+            }
+
+        } else {
+
+            return response()->json([
+                'success'=>false,
+                'message'=>'You need admin authorization'
+            ], 400);
+        }
+
+
     }
 }

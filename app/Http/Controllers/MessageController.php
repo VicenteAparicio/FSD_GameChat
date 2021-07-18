@@ -88,7 +88,7 @@ class MessageController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Message  $message
+     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
     public function messagesByPartyId(Request $request)
@@ -119,13 +119,12 @@ class MessageController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * Update message.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Message  $message
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Message $message)
+    public function update(Request $request)
     {
         $logUser = auth()->user();
         $message = Message::find($request->message_id);
@@ -163,9 +162,9 @@ class MessageController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Remove message by message id.
      *
-     * @param  \App\Models\Message  $message
+     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
     public function destroy(Request $request)
@@ -173,10 +172,6 @@ class MessageController extends Controller
         $user = auth()->user();
 
         $message = Message::find($request->message_id);
-        // return response()->json([
-        //     'success'=>true,
-        //     'data'=>$message
-        // ], 200);
         
         if ($user->isAdmin || $message->user_id == $user->id) {
 
@@ -195,22 +190,17 @@ class MessageController extends Controller
             } else {
 
                 return response()->json([
-
                     'success'=>false,
                     'message'=>'There is no message here!!'
-
                 ], 400);
-
 
             }
             
         } else {
 
             return response()->json([
-
                 'success'=>false,
                 'message'=>'You have no power here to delete this message!!'
-
             ], 400);
         }
     }

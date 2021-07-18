@@ -8,24 +8,58 @@ use Illuminate\Http\Request;
 class userController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Display all users.
      *
      * @return \Illuminate\Http\Response
      */
     public function index()
     {
         $user = auth()->user();
+
         if ($user->isAdmin) {
+
             $allUsers = User::all();
+
             return response()->json([
                 'success' => true,
                 'data' => $allUsers
             ], 200);
+
         }else{      
+
             return response()->json([
                 'success' => false,
                 'messate' => 'You need admin authorization'
             ], 400);
+
+        }
+    }
+
+    /**
+     * Display all active users.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function activeUsers()
+    {
+        $user = auth()->user();
+
+        if ($user->isAdmin) {
+
+            $activeUsers = User::where('isActive', true)->get();
+
+            return response()->json([
+                'success' => true,
+                'data' => $activeUsers
+            ], 200);
+
+        }else{      
+
+            return response()->json([
+                'success' => false,
+                'messate' => 'You need admin authorization'
+            ], 400);
+
         }
     }
 
@@ -33,7 +67,6 @@ class userController extends Controller
      * Display user by Id.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\User  $user
      * @return \Illuminate\Http\Response
      */
     public function userById(Request $request)
@@ -57,7 +90,6 @@ class userController extends Controller
     * Display user by userName.
     *
     * @param  \Illuminate\Http\Request  $request
-    * @param  \App\Models\User  $user
     * @return \Illuminate\Http\Response
     */
     public function userByName(Request $request)
@@ -81,7 +113,6 @@ class userController extends Controller
     * Display user by SteamId.
     *
     * @param  \Illuminate\Http\Request  $request
-    * @param  \App\Models\User  $user
     * @return \Illuminate\Http\Response
     */
     public function userBySteamId(Request $request)
@@ -149,18 +180,19 @@ class userController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Remove user.
      *
-     * @param  \App\Models\User  $user
+     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function destroy(User $user)
+    public function destroy(Request $request)
     {
-        // GET USER
-        $logUser = auth()->user();
-        $user = User::find($logUser->id);
         
-        if ($user OR $user->isAdmin == true) {
+        $logUser = auth()->user();
+
+        $user = User::find($request->user_id);
+        
+        if ($logUser->id == $request->user_id || $logUser->isAdmin == true) {
         
             $user->isActive = 0;
             $user->save();
@@ -168,16 +200,13 @@ class userController extends Controller
             return response()->json([
                 'success' => true,
                 'data' => $user
-        
             ], 200);
         
         } else {
         
             return response()->json([
-        
                 'success' => false,
-                'message' => 'Error, user not deleted'
-        
+                'message' => 'You can not delete this user'
             ], 400);
             
         }

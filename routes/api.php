@@ -32,6 +32,7 @@ Route::middleware('auth:api')->group(function() {
     Route::post('updateparty', [PartyController::class, 'update']);
     
     Route::get('allparties', [PartyController::class, 'index']);
+    Route::get('activeparties', [PartyController::class, 'activeParties']);
     Route::post('partiesbyowner', [PartyController::class, 'partiesByOwner']);
     Route::post('partiesbygame', [PartyController::class, 'partiesByGame']);
     Route::post('partybyid', [PartyController::class, 'partyById']);
@@ -40,7 +41,7 @@ Route::middleware('auth:api')->group(function() {
     Route::post('addmember', [MembershipController::class, 'store']);
     Route::post('deletemember', [MembershipController::class, 'destroy']);
     Route::get('allmemberships', [MembershipController::class, 'index']);
-    Route::post('membershipById', [MembershipController::class, 'membershipById']);
+    Route::post('membershipByUserId', [MembershipController::class, 'membershipById']);
 
     // MESSAGE ROUTES
     Route::post('newmessage', [MessageController::class, 'store']);
@@ -51,7 +52,9 @@ Route::middleware('auth:api')->group(function() {
 
     // USER ROUTES
     Route::post('updateuser', [userController::class, 'update']);
+    Route::post('deleteuser', [userController::class, 'destroy']);
     Route::get('allusers', [userController::class, 'index']);
+    Route::get('activeusers', [userController::class, 'activeUsers']);
     Route::post('userbyid', [userController::class, 'userById']);
     Route::post('userbyname', [userController::class, 'userByName']);
     Route::post('userbysteamid', [userController::class, 'userBySteamId']);
@@ -61,6 +64,6 @@ Route::middleware('auth:api')->group(function() {
     Route::post('deletegame', [GameController::class, 'destroy']);
     Route::post('updategame', [GameController::class, 'update']);
     Route::get('allgames', [GameController::class, 'index']);
+    Route::post('gamebyid', [GameController::class, 'gameById']);
     
-    // return $request->user();
 });

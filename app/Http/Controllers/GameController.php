@@ -31,7 +31,6 @@ class GameController extends Controller
                 'success' => false,
                 'messate' => 'You need need to loguin'
             ], 400);
-
         }
     }
 
@@ -80,9 +79,7 @@ class GameController extends Controller
                 'success'=>false,
                 'message'=>'You need admin authorization'
             ], 400);
-
         }
-
     }
 
     /**
@@ -91,9 +88,36 @@ class GameController extends Controller
      * @param  \App\Models\Game  $game
      * @return \Illuminate\Http\Response
      */
-    public function show(Game $game)
+    public function gameById(Request $request)
     {
+        $user = auth()->user();
 
+        if ($user) {
+
+            $gameById = Game::find($request->game_id);
+
+            if ($gameById) {
+
+                return response()->json([
+                    'success' => true,
+                    'data' => $gameById
+                ], 200);
+                
+            } else {            
+            
+                return response()->json([
+                    'success' => false,
+                    'messate' => 'Game not found'
+                ], 400);
+            }
+
+        } else {      
+
+            return response()->json([
+                'success' => false,
+                'messate' => 'You need need to loguin'
+            ], 500);
+        }
     }
 
     /**

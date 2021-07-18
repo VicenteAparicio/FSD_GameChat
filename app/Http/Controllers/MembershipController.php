@@ -94,7 +94,6 @@ class MembershipController extends Controller
                 'data' =>$membership
 
             ], 400);
-
         }
     }
 
@@ -104,7 +103,7 @@ class MembershipController extends Controller
      * @param  \App\Models\Membership  $membership
      * @return \Illuminate\Http\Response
      */
-    public function membershipById(Request $request)
+    public function membershipByUserId(Request $request)
     {
         $user = auth()->user();
 

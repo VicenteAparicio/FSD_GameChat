@@ -100,7 +100,7 @@ class MembershipController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Membership  $membership
+     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
     public function membershipByUserId(Request $request)
@@ -130,7 +130,7 @@ class MembershipController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Membership  $membership
+     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
     public function destroy(Request $request)

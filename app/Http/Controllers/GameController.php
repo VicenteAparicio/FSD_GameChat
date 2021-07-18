@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 class GameController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Display all active games.
      *
      * @return \Illuminate\Http\Response
      */
@@ -35,7 +35,7 @@ class GameController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Add new game to the database.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
@@ -83,9 +83,9 @@ class GameController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * Display game by id.
      *
-     * @param  \App\Models\Game  $game
+     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
     public function gameById(Request $request)
@@ -102,7 +102,7 @@ class GameController extends Controller
                     'success' => true,
                     'data' => $gameById
                 ], 200);
-                
+
             } else {            
             
                 return response()->json([
@@ -121,10 +121,9 @@ class GameController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * Edit game.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Game  $game
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request)
@@ -167,7 +166,7 @@ class GameController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Delete game from view.
      *
      * @param  \App\Models\Game  $game
      * @return \Illuminate\Http\Response
@@ -210,7 +209,5 @@ class GameController extends Controller
                 'message'=>'You need admin authorization'
             ], 400);
         }
-
-
     }
 }

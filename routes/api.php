@@ -26,26 +26,30 @@ Route::post('login', [PassportAuthController::class, 'login']);
 
 Route::middleware('auth:api')->group(function() {
     // Route::resource('parties', PartyController::class);
-    // PARTY ROUTES
+    // PARTY ROUTES 
     Route::post('createparty', [PartyController::class, 'store']);
     Route::post('deleteparty', [PartyController::class, 'destroy']);
     Route::post('updateparty', [PartyController::class, 'update']);
-
+    
     Route::get('allparties', [PartyController::class, 'index']);
     Route::post('partiesbyowner', [PartyController::class, 'partiesByOwner']);
     Route::post('partiesbygame', [PartyController::class, 'partiesByGame']);
     Route::post('partybyid', [PartyController::class, 'partyById']);
+    
     // MEMBERSHIP ROUTES
     Route::post('addmember', [MembershipController::class, 'store']);
+
     // MESSAGE ROUTES
     Route::post('newmessage', [MessageController::class, 'store']);
+
     // USER ROUTES
     Route::get('allusers', [userController::class, 'allusers']);
+
     // GAME ROUTES
-    Route::get('showgames', [GameController::class, 'index']);
     Route::post('addgame', [GameController::class, 'store']);
     Route::post('deletegame', [GameController::class, 'destroy']);
     Route::post('updategame', [GameController::class, 'update']);
+    Route::get('allgames', [GameController::class, 'index']);
     
     // return $request->user();
 });

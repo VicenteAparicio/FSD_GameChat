@@ -18,7 +18,7 @@ class GameController extends Controller
 
         if ($user) {
 
-            $allGames = Game::all();
+            $allGames = Game::all()->where('isActive', true);
 
             return response()->json([
                 'success' => true,
@@ -109,7 +109,7 @@ class GameController extends Controller
 
         if ($user->isAdmin) {
 
-            $game = Game::find($request->id);
+            $game = Game::find($request->game_id);
 
             if ($game) {
 
@@ -118,7 +118,8 @@ class GameController extends Controller
                 if ($updated) {
 
                     return response()->json([
-                        'success'=>true
+                        'success'=>true,
+                        'data' => $game
                     ], 200);
 
                 } else {
@@ -134,7 +135,7 @@ class GameController extends Controller
 
                 return response()->json([
                     'success' => false,
-                    'message' => 'You need admin authorization'
+                    'message' => 'You need admin authorization meh'
                 ], 400);
 
             }

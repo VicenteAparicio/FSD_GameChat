@@ -52,7 +52,6 @@ class PartyController extends Controller
             'game_id'=>'required',
         ]);
 
-
         $party = Party::create([
             'partyName'=>$request->partyName,
             'description'=>$request->description,
@@ -99,9 +98,7 @@ class PartyController extends Controller
 
     public function partiesByOwner(Request $request)
     {
-
-        $owner_id = $request->owner_id;
-        $party = Party::where('owner_id', $owner_id)->get();
+        $party = Party::where('owner_id', $request->owner_id)->get();
 
         if(!$party) {
             return response()->json([
@@ -118,11 +115,6 @@ class PartyController extends Controller
 
     public function partiesByGame(Request $request)
     {
-
-        // $id = $request->game_id;
-        // $party = Party::find($id);
-
-        // $game_id = $request->game_id;
         $party = Party::where('game_id', $request->game_id)->get();
 
         if(!$party) {
@@ -146,30 +138,35 @@ class PartyController extends Controller
      * @param  \App\Models\Party  $party
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
-        $id = $request->game_id;
-        $party = Party::find($id);
+        $user = auth()->user();
+        $party = Party::find($request->party_id);
+        
+        // CHECK USER OWNS THE PARTY OR USER IS ADMIN
+        if ($party->owner_id == $user->id OR $user->isAdmin == true) {
 
-        if (!$party) {
-            return response()->json([
-                'success'=>false,
-                'message'=> 'Party not found'
-            ], 400);
-        }
+            $updated = $party->fill($request->all())->save();
 
-        $updated = $party->fill($request->all())->save();
+            if ($updated) {
+                return response()->json([
+                    'success'=>true,
+                    'data'=>$party
+                ], 200);
+            } else {
+                return response()->json([
+                    'success'=>false,
+                    'message'=> 'Error party can not be updated'
+                ], 400);
 
-        if ($updated) {
-            return response()->json([
-                'success'=>true
-            ]);
+            }
         } else {
             return response()->json([
                 'success'=>false,
-                'message'=>'Party can not be updated'
-            ], 500);
+                'message'=> 'You can not update this party'
+            ], 400);
         }
+
     }
 
     /**
@@ -180,13 +177,12 @@ class PartyController extends Controller
      */
     public function destroy(Request $request)
     {
-         // $party = auth()->user()->parties->find($request->game_id);
 
-        // CHECK USER OWNS THE PARTY
         $user = auth()->user();
-        $party = Party::find('owner_id', $user->id AND 'id', $request->party_id);
+        $party = Party::find($request->party_id);
 
-        if ($party OR $user->isAdmin == true) {
+        // CHECK USER OWNS THE PARTY OR USER IS ADMIN
+        if ($party->owner_id == $user->id OR $user->isAdmin == true) {
 
             $party->isActive = 0;
             $party->save();
@@ -202,12 +198,10 @@ class PartyController extends Controller
             return response()->json([
 
                 'success' => false,
-                'message' => 'You don\'t own this party'
+                'message' => 'You can not delete this party'
 
             ], 400);
             
-
         }
-
     }
 }

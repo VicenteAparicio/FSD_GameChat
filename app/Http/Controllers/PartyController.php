@@ -19,7 +19,7 @@ class PartyController extends Controller
 
         if ($user) {
 
-            $allParties = Party::where('isActive', true);
+            $allParties = Party::where('isActive', true)->get();
 
             return response()->json([
                 'success' => true,

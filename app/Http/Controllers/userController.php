@@ -116,8 +116,10 @@ class userController extends Controller
 
             $userUp = $user->fill([
                 'username'=>$request->username,
+                'steamId'=>$request->steamId,
                 'email'=>$request->email,
-                'password'=>bcrypt($request->password)
+                'password'=>bcrypt($request->password),
+                
             ])->save();
 
             if($userUp) {

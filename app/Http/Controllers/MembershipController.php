@@ -129,18 +129,6 @@ class MembershipController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Membership  $membership
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Membership $membership)
-    {
-        //
-    }
-
-    /**
      * Remove the specified resource from storage.
      *
      * @param  \App\Models\Membership  $membership

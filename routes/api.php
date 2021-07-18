@@ -44,6 +44,10 @@ Route::middleware('auth:api')->group(function() {
 
     // MESSAGE ROUTES
     Route::post('newmessage', [MessageController::class, 'store']);
+    Route::post('deletemessage', [MessageController::class, 'destroy']);
+    Route::post('updatemessage', [MessageController::class, 'update']);
+    Route::get('allmessages', [MessageController::class, 'index']);
+    Route::post('messagesbypartyid', [MessageController::class, 'messagesByPartyId']);
 
     // USER ROUTES
     Route::post('updateuser', [userController::class, 'update']);

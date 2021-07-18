@@ -24,4 +24,8 @@ class Message extends Model
         'party_id',
         'user_id'
     ];
+
+    protected $hidden = [
+        'isActive',
+    ];
 }

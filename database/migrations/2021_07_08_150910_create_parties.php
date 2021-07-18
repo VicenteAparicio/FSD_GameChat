@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateMessages extends Migration
+class CreateParties extends Migration
 {
     /**
      * Run the migrations.
@@ -13,13 +13,14 @@ class CreateMessages extends Migration
      */
     public function up()
     {
-        Schema::create('messages', function (Blueprint $table) {
+        Schema::create('parties', function (Blueprint $table) {
             $table->id();
-            $table->text('message');
-            $table->foreignId('party_id')->references('id')->on('parties');
-            $table->foreignId('user_id')->references('id')->on('users');
-            $table->date('date');
+            $table->string('partyName')->unique();
+            $table->string('description');
             $table->boolean('isActive')->default(true);
+            // $table->string('user_id');
+            $table->foreignId('game_id')->references('id')->on('games');
+            $table->foreignId('owner_id')->references('id')->on('users');
             $table->timestamps();
         });
     }
@@ -31,6 +32,6 @@ class CreateMessages extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('messages');
+        Schema::dropIfExists('parties');
     }
 }

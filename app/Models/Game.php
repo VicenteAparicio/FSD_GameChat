@@ -9,10 +9,21 @@ use Illuminate\Database\Eloquent\Model;
 
 class Game extends Model
 {
-    use HasFactory;
-
     // GAME has many Party relations
     public function party(){
         return $this->hasMany(Party::class);
     }
+    use HasFactory;
+
+    protected $fillable = [
+        'title',
+        'thumbnail_url',
+        'url',
+    ];
+
+    protected $hidden = [
+        'isActive'
+    ];
+
+
 }

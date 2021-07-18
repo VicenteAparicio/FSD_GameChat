@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateUserpartys extends Migration
+class CreateMemberships extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,10 @@ class CreateUserpartys extends Migration
      */
     public function up()
     {
-        Schema::create('userpartys', function (Blueprint $table) {
+        Schema::create('memberships', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('party_id')->references('id')->on('partys')->onDelete('cascade');
+            $table->boolean('isActive')->default(true);
+            $table->foreignId('party_id')->references('id')->on('parties')->onDelete('cascade');
             $table->foreignId('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->timestamps();
         });

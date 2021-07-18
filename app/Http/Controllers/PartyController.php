@@ -9,59 +9,130 @@ use Illuminate\Http\Request;
 class PartyController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Display all parties.
      *
      * @return \Illuminate\Http\Response
      */
     public function index()
     {
-        $parties = auth()->user()->parties;
+        $user = auth()->user();
 
-        return response()->json([
-            'success'=>true,
-            'data'=>$parties
-        ]);
+        if ($user->isAdmin) {
+
+            $allParties = Party::all();
+
+            return response()->json([
+                'success' => true,
+                'data' => $allParties
+            ], 200);
+
+        } else {      
+
+            return response()->json([
+                'success' => false,
+                'messate' => 'You need need to loguin'
+            ], 400);
+
+        }
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Display all active parties.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function activeParties()
+    {
+        $user = auth()->user();
+
+        if ($user) {
+
+            $activeParties = Party::where('isActive', true)->get();
+
+            return response()->json([
+                'success' => true,
+                'data' => $activeParties
+            ], 200);
+
+        } else {      
+
+            return response()->json([
+                'success' => false,
+                'messate' => 'You need need to loguin'
+            ], 400);
+
+        }
+    }
+
+    /**
+     * Create a new party
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
     {
+        $user= auth()->user();
+
         $this->validate($request, [
-            'title'=>'required',
-            'description'=>'required'
+            'partyName'=>'required',
+            'description'=>'required',
+            'game_id'=>'required',
         ]);
 
-        $party = new Party();
-        $party->partyName = $request->partyName;
-        $party->description = $request->description;
+        $party = Party::create([
+            'partyName'=>$request->partyName,
+            'description'=>$request->description,
+            'game_id'=>$request->game_id,
+            'owner_id'=>$user->id
+        ]);
+        
 
-        if (auth()->user()->parties()->save($party)) {
+        if ($party) {
             return response()->json([
                 'success'=>true,
                 'data'=>$party->toArray()
-            ]);
+            ], 200);
         } else {
             return response()->json([
                 'success'=>false,
-                'message'=>'Party not added'
+                'message'=>'Party not created'
             ], 500);
         }
     }
 
     /**
-     * Display the specified resource.
+     * Search party by id.
      *
-     * @param  \App\Models\Party  $party
+     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function partyById(Request $request)
     {
-        $party = auth()->user()->parties()->find($id);
+        $party = Party::find($request->party_id);
+
+        if(!$party) {
+            return response()->json([
+                'success'=>false,
+                'message'=>'Party not found'
+            ], 400);
+        }
+
+        return response()->json([
+            'success'=>true,
+            'data'=>$party
+        ], 400);
+    }
+
+    /**
+     * Search party by owner id.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function partiesByOwner(Request $request)
+    {
+        $party = Party::where('owner_id', $request->owner_id)->get();
 
         if(!$party) {
             return response()->json([
@@ -77,65 +148,122 @@ class PartyController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * Search party by game id.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Party  $party
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function partiesByGame(Request $request)
     {
-        $party = auth()->user()->parties()->find($id);
+        $party = Party::where('game_id', $request->game_id)->get();
 
-        if (!$party) {
+        if(!$party) {
             return response()->json([
                 'success'=>false,
-                'message'=> 'Party not found'
+                'message'=>'Party not found ',
             ], 400);
         }
 
-        $updated = $party->fill($request->all())->save();
+        return response()->json([
+            'success'=>true,
+            'data'=>$party->toArray()
+        ], 200);
+    }
 
-        if ($updated) {
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function partyByName(Request $request)
+    {
+        $party = Party::where('partyName', 'LIKE', '%' . $request->partyName . '%')->get();
+
+        if(!$party) {
             return response()->json([
-                'success'=>true
-            ]);
+                'success'=>false,
+                'message'=>'Party not found ',
+            ], 400);
+        }
+
+        return response()->json([
+            'success'=>true,
+            'data'=>$party->toArray()
+        ], 200);
+    }
+    
+
+    /**
+     * Update party.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function update(Request $request)
+    {
+        $user = auth()->user();
+        $party = Party::find($request->party_id);
+        
+        // CHECK USER OWNS THE PARTY OR USER IS ADMIN
+        if ($party->owner_id == $user->id OR $user->isAdmin == true) {
+
+            $updated = $party->fill($request->all())->save();
+
+            if ($updated) {
+                return response()->json([
+                    'success'=>true,
+                    'data'=>$party
+                ], 200);
+            } else {
+                return response()->json([
+                    'success'=>false,
+                    'message'=> 'Error party not updated'
+                ], 500);
+
+            }
         } else {
             return response()->json([
                 'success'=>false,
-                'message'=>'Party can not be updated'
-            ], 500);
+                'message'=> 'You can not update this party'
+            ], 400);
         }
+
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Party  $party
+     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request)
     {
-        $party = auth()->user()->parties()->find($id);
 
-        if (!$party) {
+        $user = auth()->user();
+        $party = Party::find($request->party_id);
+
+        // CHECK USER OWNS THE PARTY OR USER IS ADMIN
+        if ($party->owner_id == $user->id OR $user->isAdmin == true) {
+
+            $party->isActive = 0;
+            $party->save();
+
+            return response()->json([
+                'success' => true,
+                'data' => $party
+
+            ], 200);
+
+        } else {
+
             return response()->json([
 
                 'success' => false,
-                'message' => 'Party not found'
+                'message' => 'You can not delete this party'
 
             ], 400);
-        }
-
-        if ($party->delte()) {
-            return response()->json([
-                'success' => true
-            ]);
-        } else {
-            return response()->json([
-                'suceess'=>false,
-                'message'=>'Party can not be deleted'
-            ], 500);
+            
         }
     }
 }

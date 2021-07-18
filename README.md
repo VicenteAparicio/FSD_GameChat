@@ -1,62 +1,149 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400"></a></p>
+# GAME CHAT BACKEND
 
-<p align="center">
-<a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+## Project details
 
-## About Laravel
+### This is a Laravel PHP Back-End project from Fullstack Developer Bootcamp at <a href="https://geekshubsacademy.com/">GeeksHubs Academy</a> 2021. On this project I created a chat back-end database and structure for games platform.
+<br>
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+- Start date: 12 July 2021
+- Delivery date: 18 July 2021
+- Dedicated time: < 40 hours 
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+<br>
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+## Access to Heroku deploy
+https://backendgamechat.herokuapp.com/
 
-## Learning Laravel
+<br>
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+## Tech
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 1500 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+- PHP<br>
+- LARAVEL PHP<br>
+- POSTMAN<br>
+- SEQUELIZE<br>
+- DBEAVER<br>
+- HEROKUAP<br>
 
-## Laravel Sponsors
+<br><br>
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+## Guide
 
-### Premium Partners
+<br>
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[OP.GG](https://op.gg)**
+- [Install](#install)
 
-## Contributing
+- [Instructions](#instructions)
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
 
-## Code of Conduct
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+<br><br>
+<img src="./resources/img/image03.png" style="width: 100%">
+<br><br>
 
-## Security Vulnerabilities
+***
+## <a name="install">Install</a>
+***
+<br>
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+- Clone or download the github project from <a href="https://github.com/VicenteAparicio/FSD_GameChat">here</a>
 
-## License
+- Deploy on your cloud service (like Herokuapp).
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+- Install from composer: <code>composer install</code>
+
+- Migrate the tables: <code>php artisan migrate</code>
+
+- Install Passport: <code>php artisan Passport:install</code>
+
+- Generate key: <code>php artisan key:generate</code>
+
+- Register user and change isAdmin to true on database.
+
+- Add the list of games you like.
+
+- Let the users create their owns parties and join them to talk about their favourite games.
+
+- Manage all the system from the comodity of your GOD ADMIN user.
+
+
+
+<br><br>
+
+### STRUCTURE DIAGRAM
+<br>
+<img src="./resources/img/image01.png" style="width: 100%"><br><br>
+
+
+
+***
+## <a name="instructions">Instructions</a>
+***
+<br>
+
+Anybody can register and log into their accounts. Check all the parties and join to the conversation. Users can create, modify and delete parties, they can join to their parties or parties created by others users and send messages. If they want, they can delete their own messages, parties and account too. 
+<br>
+<br>
+
+## REGISTER AND LOGIN
+- Route::post /register
+- Route::post /login'
+
+## ROUTES PARTY
+- Route::post /deleteparty
+- Route::post /updateparty
+- Route::get /allparties
+- Route::get /activeparties
+- Route::post /partiesbyowner
+- Route::post /partiesbygame
+- Route::post /partybyid
+## MEMBERSHIP ROUTES
+- Route::post /addmember
+- Route::post /deletemember
+- Route::get /allmemberships
+- Route::post /membershipbyuserid
+## MESSAGE ROUTES
+- Route::post /newmessage
+- Route::post /deletemessage
+- Route::post /updatemessage
+- Route::get /allmessages
+- Route::post /messagesbypartyid
+## USER ROUTES
+- Route::post /updateuser
+- Route::post /deleteuser
+- Route::get /allusers
+- Route::get /activeusers
+- Route::post /userbyid
+- Route::post /userbyname
+- Route::post /userbysteamid
+## GAME ROUTES
+- Route::post /addgame
+- Route::post /deletegame
+- Route::post /updategame
+- Route::get /allgames
+- Route::post /gamebyid
+
+<br>
+
+<img src="./resources/img/image04.png" style="width: 100%"><br><br>
+
+
+***
+### Stuff I left behind
+***
+<br>
+I would like to have more time to develop a entire system for a good game chat system: 
+<br><br>
+
+ - Create an entire Front-End application
+ - Add friend system
+ - Add report system
+ - Add a ranked friendly system for users who help another users
+ - Etc
+
+<br><br>
+ ***
+### THANKS
+***
+<br>
+To my classroom mates and teachers, and every single one who contribute to make this comunity bigger step by step.

@@ -41,7 +41,7 @@ Route::middleware('auth:api')->group(function() {
     Route::post('addmember', [MembershipController::class, 'store']);
     Route::post('deletemember', [MembershipController::class, 'destroy']);
     Route::get('allmemberships', [MembershipController::class, 'index']);
-    Route::post('membershipByUserId', [MembershipController::class, 'membershipById']);
+    Route::post('membershipbyuserid', [MembershipController::class, 'membershipByUserId']);
 
     // MESSAGE ROUTES
     Route::post('newmessage', [MessageController::class, 'store']);

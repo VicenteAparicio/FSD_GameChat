@@ -149,11 +149,18 @@ class GameController extends Controller
      */
     public function destroy(Request $request)
     {
+        // GET USER 
         $user = auth()->user();
 
+        // CHECK USER ADMIN ATRIBUTE
         if ($user->isAdmin) {
 
-            $game = Game::find($request->game_id)->delete();
+            // GET GAME
+            $game = Game::find($request->game_id);
+
+            // UPDATE ATRIBUTE
+            $game->isActive = 0;
+            $game->save();
             
             if ($game){
 
@@ -166,7 +173,7 @@ class GameController extends Controller
 
                 return response()->json([
                     'success'=>false,
-                    'message'=>'Game can not be deleted cause is being used'
+                    'message'=>'Game was not deleted'
                 ], 500);
 
             }

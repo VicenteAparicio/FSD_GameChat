@@ -80,9 +80,9 @@ class PartyController extends Controller
      * @param  \App\Models\Party  $party
      * @return \Illuminate\Http\Response
      */
-    public function partyid(Request $request)
+    public function partyById(Request $request)
     {
-        $party = Party::find($request->id);
+        $party = Party::find($request->party_id);
 
         if(!$party) {
             return response()->json([
@@ -97,7 +97,7 @@ class PartyController extends Controller
         ], 400);
     }
 
-    public function partyowner(Request $request)
+    public function partiesByOwner(Request $request)
     {
 
         $owner_id = $request->owner_id;
@@ -116,7 +116,7 @@ class PartyController extends Controller
         ], 400);
     }
 
-    public function gameparty(Request $request)
+    public function partiesByGame(Request $request)
     {
 
         // $id = $request->game_id;
@@ -128,7 +128,7 @@ class PartyController extends Controller
         if(!$party) {
             return response()->json([
                 'success'=>false,
-                'message'=>'Party not found '.$id,
+                'message'=>'Party not found ',
             ], 400);
         }
 
@@ -178,28 +178,36 @@ class PartyController extends Controller
      * @param  \App\Models\Party  $party
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request)
     {
-        $party = auth()->user()->parties()->find($id);
+         // $party = auth()->user()->parties->find($request->game_id);
 
-        if (!$party) {
+        // CHECK USER OWNS THE PARTY
+        $user = auth()->user();
+        $party = Party::find('owner_id', $user->id AND 'id', $request->party_id);
+
+        if ($party OR $user->isAdmin == true) {
+
+            $party->isActive = 0;
+            $party->save();
+
+            return response()->json([
+                'success' => true,
+                'data' => $party
+
+            ], 200);
+
+        } else {
+
             return response()->json([
 
                 'success' => false,
-                'message' => 'Party not found'
+                'message' => 'You don\'t own this party'
 
             ], 400);
+            
+
         }
 
-        if ($party->delete()) {
-            return response()->json([
-                'success' => true
-            ]);
-        } else {
-            return response()->json([
-                'suceess'=>false,
-                'message'=>'Party can not be deleted'
-            ], 500);
-        }
     }
 }

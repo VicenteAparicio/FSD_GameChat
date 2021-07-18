@@ -7,10 +7,17 @@ use Illuminate\Database\Eloquent\Model;
 
 class Membership extends Model
 {
+    // RELATION TO USER
     public function user(){
         return $this->belongsTo(User::class);
     }
+
+    // RELATION TO PARTY
     public function parties(){
         return $this->belongsTo(Party::class);
     }
+
+    protected $hidden = [
+        'isActive'
+    ];
 }

@@ -15,6 +15,7 @@ class CreateMemberships extends Migration
     {
         Schema::create('memberships', function (Blueprint $table) {
             $table->id();
+            $table->boolean('isActive')->default(true);
             $table->foreignId('party_id')->references('id')->on('parties')->onDelete('cascade');
             $table->foreignId('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->timestamps();

@@ -75,29 +75,31 @@ class userController extends Controller
      * @param  \App\Models\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, User $user)
+    public function update(Request $request)
     {
-        $user = auth()->user()->find($request->id);
+        $logUser = auth()->user();
+        $user = User::find($logUser->id);
 
-        if ($user) {
-            return response()->json([
-                'success' => false,
-                'message' => 'User not found'
-            ], 400);
+        if ($user OR $logUser->isAdmin == true) {
+
+            $updated = $user->fill($request->all())->save();
+
+            if($updated) {
+
+                return response()->json([
+                    'success' => true,
+                    'data' => $user
+
+                ], 400);
+
+            } else {
+
+                return response()->json([
+                    'success'=>false,
+                    'message'=>'User can not be updated'
+                ], 500);
+            }
         } 
-
-        $updated = $user->fill($request->all())->save();
-
-        if ($updated) {
-            return response()->json([
-                'success'=>true
-            ]);
-        } else {
-            return response()->json([
-                'success'=>false,
-                'message'=>'User can not be updated'
-            ], 500);
-        }
     }
 
     /**
@@ -108,6 +110,30 @@ class userController extends Controller
      */
     public function destroy(User $user)
     {
-        //
+        // GET USER
+        $logUser = auth()->user();
+        $user = User::find($logUser->id);
+        
+        if ($user OR $user->isAdmin == true) {
+        
+            $user->isActive = 0;
+            $user->save();
+        
+            return response()->json([
+                'success' => true,
+                'data' => $user
+        
+            ], 200);
+        
+        } else {
+        
+            return response()->json([
+        
+                'success' => false,
+                'message' => 'Error, user not deleted'
+        
+            ], 400);
+            
+        }
     }
 }

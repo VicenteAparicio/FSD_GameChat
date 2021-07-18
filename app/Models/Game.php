@@ -9,6 +9,10 @@ use Illuminate\Database\Eloquent\Model;
 
 class Game extends Model
 {
+    // GAME has many Party relations
+    public function party(){
+        return $this->hasMany(Party::class);
+    }
     use HasFactory;
 
     protected $fillable = [
@@ -17,8 +21,9 @@ class Game extends Model
         'url',
     ];
 
-    // GAME has many Party relations
-    public function party(){
-        return $this->hasMany(Party::class);
-    }
+    protected $hidden = [
+        'isActive'
+    ];
+
+
 }

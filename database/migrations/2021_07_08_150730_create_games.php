@@ -18,6 +18,7 @@ class CreateGames extends Migration
             $table->string('title')->unique();
             $table->string('thumbnail_url');
             $table->string('url');
+            $table->boolean('isActive')->default(true);
             $table->timestamps();
         });
     }

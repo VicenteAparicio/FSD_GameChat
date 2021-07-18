@@ -17,6 +17,7 @@ class CreateParties extends Migration
             $table->id();
             $table->string('partyName');
             $table->string('description');
+            $table->boolean('isActive')->default(true);
             // $table->string('user_id');
             $table->foreignId('game_id')->references('id')->on('games');
             $table->foreignId('owner_id')->references('id')->on('users');

@@ -7,10 +7,12 @@ use Illuminate\Database\Eloquent\Model;
 
 class Message extends Model
 {
+    // RELATION TO USER
     public function user(){
         return $this->belongsTo(User::class);
     }
 
+    // RELATION TO PARTY
     public function party(){
         return $this->belongsTo(Party::class);
     }

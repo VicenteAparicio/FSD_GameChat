@@ -27,11 +27,14 @@ Route::post('login', [PassportAuthController::class, 'login']);
 Route::middleware('auth:api')->group(function() {
     // Route::resource('parties', PartyController::class);
     // PARTY ROUTES
-    Route::get('allparties', [PartyController::class, 'index']);
     Route::post('createparty', [PartyController::class, 'store']);
-    Route::post('partyowner', [PartyController::class, 'partyowner']);
-    Route::post('gameparty', [PartyController::class, 'gameparty']);
-    Route::post('partyid', [PartyController::class, 'partyid']);
+    Route::post('deleteparty', [PartyController::class, 'destroy']);
+    Route::post('updateparty', [PartyController::class, 'update']);
+
+    Route::get('allparties', [PartyController::class, 'index']);
+    Route::post('partiesbyowner', [PartyController::class, 'partiesByOwner']);
+    Route::post('partiesbygame', [PartyController::class, 'partiesByGame']);
+    Route::post('partybyid', [PartyController::class, 'partyById']);
     // MEMBERSHIP ROUTES
     Route::post('addmember', [MembershipController::class, 'store']);
     // MESSAGE ROUTES

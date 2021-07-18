@@ -18,7 +18,7 @@ class GameController extends Controller
 
         if ($user) {
 
-            $allGames = Game::all()->where('isActive', true);
+            $allGames = Game::where('isActive', true);
 
             return response()->json([
                 'success' => true,

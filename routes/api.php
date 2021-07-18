@@ -38,12 +38,19 @@ Route::middleware('auth:api')->group(function() {
     
     // MEMBERSHIP ROUTES
     Route::post('addmember', [MembershipController::class, 'store']);
+    Route::post('deletemember', [MembershipController::class, 'destroy']);
+    Route::get('allmemberships', [MembershipController::class, 'index']);
+    Route::post('membershipById', [MembershipController::class, 'membershipById']);
 
     // MESSAGE ROUTES
     Route::post('newmessage', [MessageController::class, 'store']);
 
     // USER ROUTES
-    Route::get('allusers', [userController::class, 'allusers']);
+    Route::post('updateuser', [userController::class, 'update']);
+    Route::get('allusers', [userController::class, 'index']);
+    Route::post('userbyid', [userController::class, 'userById']);
+    Route::post('userbyname', [userController::class, 'userByName']);
+    Route::post('userbysteamid', [userController::class, 'userBySteamId']);
 
     // GAME ROUTES
     Route::post('addgame', [GameController::class, 'store']);

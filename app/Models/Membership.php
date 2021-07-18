@@ -17,7 +17,14 @@ class Membership extends Model
         return $this->belongsTo(Party::class);
     }
 
+    protected $fillable = [
+        'party_id',
+        'user_id',
+        
+    ];
+
     protected $hidden = [
         'isActive'
+        
     ];
 }

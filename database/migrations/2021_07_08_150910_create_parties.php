@@ -15,7 +15,7 @@ class CreateParties extends Migration
     {
         Schema::create('parties', function (Blueprint $table) {
             $table->id();
-            $table->string('partyName');
+            $table->string('partyName')->unique();
             $table->string('description');
             $table->boolean('isActive')->default(true);
             // $table->string('user_id');

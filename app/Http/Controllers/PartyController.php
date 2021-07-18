@@ -19,7 +19,7 @@ class PartyController extends Controller
 
         if ($user) {
 
-            $allParties = Party::all();
+            $allParties = Party::where('isActive', true);
 
             return response()->json([
                 'success' => true,
@@ -156,8 +156,8 @@ class PartyController extends Controller
             } else {
                 return response()->json([
                     'success'=>false,
-                    'message'=> 'Error party can not be updated'
-                ], 400);
+                    'message'=> 'Error party not updated'
+                ], 500);
 
             }
         } else {

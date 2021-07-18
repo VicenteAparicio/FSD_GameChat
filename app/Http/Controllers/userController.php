@@ -14,45 +14,6 @@ class userController extends Controller
      */
     public function index()
     {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\User  $user
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Request $request)
-    {
-        // $user = auth()->user()->find($request->$id);
-
-        // if ($user) {
-        //     return response()->json([
-        //         'success' => false,
-        //         'message' => 'User not found'
-        //     ], 400);
-        // } 
-
-        // return response()->json([
-        //     'success'=>false,
-        //     'message'=>'User can not be found'
-        // ], 500);
-    }
-
-    public function allusers()
-    {
         $user = auth()->user();
         if ($user->isAdmin) {
             $allUsers = User::all();
@@ -69,22 +30,97 @@ class userController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * Display user by Id.
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \App\Models\User  $user
      * @return \Illuminate\Http\Response
      */
+    public function userById(Request $request)
+    {
+        $user = User::find($request->user_id);
+    
+        if ($user) {
+            return response()->json([
+                'success' => true,
+                'data' => $user
+            ], 200);
+        } 
+
+        return response()->json([
+            'success'=>false,
+            'message'=>'User can not be found'
+        ], 500);
+    }
+
+    /**
+    * Display user by userName.
+    *
+    * @param  \Illuminate\Http\Request  $request
+    * @param  \App\Models\User  $user
+    * @return \Illuminate\Http\Response
+    */
+    public function userByName(Request $request)
+    {
+        $user = User::where('username', $request->user_name)->get();
+    
+        if ($user) {
+            return response()->json([
+                'success' => true,
+                'data' => $user
+            ], 200);
+        } 
+
+        return response()->json([
+            'success'=>false,
+            'message'=>'User can not be found'
+        ], 500);
+    }
+
+    /**
+    * Display user by SteamId.
+    *
+    * @param  \Illuminate\Http\Request  $request
+    * @param  \App\Models\User  $user
+    * @return \Illuminate\Http\Response
+    */
+    public function userBySteamId(Request $request)
+    {
+        $user = User::where('steamId', $request->steam_id)->get();
+    
+        if ($user) {
+            return response()->json([
+                'success' => true,
+                'data' => $user
+            ], 200);
+        } 
+
+        return response()->json([
+            'success'=>false,
+            'message'=>'User can not be found'
+        ], 500);
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
     public function update(Request $request)
     {
         $logUser = auth()->user();
-        $user = User::find($logUser->id);
+        $user = User::find($request->user_id);
 
-        if ($user OR $logUser->isAdmin == true) {
+        if ($request->user_id == $logUser->id || $logUser->isAdmin == true) {
 
-            $updated = $user->fill($request->all())->save();
+            $userUp = $user->fill([
+                'username'=>$request->username,
+                'email'=>$request->email,
+                'password'=>bcrypt($request->password)
+            ])->save();
 
-            if($updated) {
+            if($userUp) {
 
                 return response()->json([
                     'success' => true,
@@ -99,7 +135,15 @@ class userController extends Controller
                     'message'=>'User can not be updated'
                 ], 500);
             }
-        } 
+
+        } else {
+
+            return response()->json([
+                'success'=>false,
+                'message'=>'You don\'t have permission'
+            ], 500);
+            
+        }
     }
 
     /**

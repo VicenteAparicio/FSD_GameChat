@@ -26,17 +26,22 @@ class MessageController extends Controller
      */
     public function store(Request $request)
     {
-
         $user = auth()->user();
 
-        $existeuserparty = Membership::where('party_id', $request->party_id AND 'user_id', $user->id);
+        $membership = Membership::where('party_id', $request->party_id)->where('user_id', $user->id)->get();
         
-        if ($existeuserparty->isEmpty()) {
+        if ($membership->isEmpty() || $membership[0]->isActive == false) {
+
+            return response()->json([
+                'success'=>true,
+                'message'=>'You are not in the party'
+            ], 400);
+
+        } else {
 
             $this->validate($request, [
                 'message'=>'required|min:4'
             ]);
-
 
             $message = Message::create([
                 'message'=>$request->message,
@@ -55,14 +60,7 @@ class MessageController extends Controller
             return response()->json([
                 'success'=>true,
                 'data'=>$message->toArray()
-            ], 400);
-
-        } else {
-
-            return response()->json([
-                'success'=>true,
-                'message'=>'User is not in the party'
-            ], 400);
+            ], 200);
 
         }
 

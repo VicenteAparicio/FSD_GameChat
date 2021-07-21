@@ -53,6 +53,7 @@ Route::middleware('auth:api')->group(function() {
     // USER ROUTES
     Route::post('updateuser', [userController::class, 'update']);
     Route::post('deleteuser', [userController::class, 'destroy']);
+    Route::post('logout', [userController::class, 'logout']);
     Route::get('allusers', [userController::class, 'index']);
     Route::get('activeusers', [userController::class, 'activeUsers']);
     Route::post('userbyid', [userController::class, 'userById']);

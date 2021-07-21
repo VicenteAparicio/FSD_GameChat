@@ -211,4 +211,22 @@ class userController extends Controller
             
         }
     }
+
+    public function logout(Request $request)
+    {
+        $user = auth()->user();
+        $userOut = $request->user()->token()->revoke();
+
+        if ($user) {
+            return response()->json([
+                'success' => true,
+                'message' => $user->userName . ' successfully logged out'
+            ]);
+        } else {
+            return response()->json([
+                'success' => false,
+                'message' => 'Error, you can\'t leave us.'
+            ], 500);
+        }
+    }
 }

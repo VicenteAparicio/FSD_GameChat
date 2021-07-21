@@ -217,7 +217,7 @@ class userController extends Controller
         $user = auth()->user();
         $userOut = $request->user()->token()->revoke();
 
-        if ($user) {
+        if ($userOut) {
             return response()->json([
                 'success' => true,
                 'message' => $user->userName . ' successfully logged out'
